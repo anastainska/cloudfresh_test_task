@@ -5,6 +5,7 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    working-directory: 1_1
 
     steps:
       - name: Checkout code
