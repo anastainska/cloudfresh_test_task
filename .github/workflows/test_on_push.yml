@@ -3,7 +3,9 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    working-directory: "1_1"
+    default:
+      run:
+        working-directory: 1_1
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
