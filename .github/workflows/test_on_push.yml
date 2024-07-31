@@ -3,7 +3,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    default:
+    defaults:
       run:
         working-directory: 1_1
     steps:
