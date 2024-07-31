@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <h1>Let's eat!</h1>
+	<ul>
+        {% for cf in cafe %}
+	<li><a href="/cafe/{{ cf }}">{{ cf }}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>
