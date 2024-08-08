@@ -2,10 +2,13 @@ name: Run tests on any push
 
 on: push
 
+defaults:
+ run:
+  working-directory: 1_1
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    working-directory: 1_1
 
     steps:
       - name: Checkout code
