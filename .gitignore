@@ -3,3 +3,4 @@
 /1_1/terraform/.terraform.lock.hcl
 /1_1/terraform/terraform.tfstate
 /1_1/terraform/terraform.tfstate.backup
+/1_1/.env

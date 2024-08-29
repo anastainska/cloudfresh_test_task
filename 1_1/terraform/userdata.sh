@@ -6,6 +6,18 @@ mkdir flask-app && cd flask-app
 python3 -m venv venv
 source venv/bin/activate
 pip3 install Flask
+sudo apt install curl unzip -y
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+FLASK_SECRET_KEY=$(aws ssm get-parameter --name FLASK_SECRET_KEY --with-decryption --query Parameter.Value --output text)
+
+echo "FLASK_SECRET_KEY=$FLASK_SECRET_KEY" | sudo tee -a /etc/environment
+
+source /etc/environment
+
+export FLASK_SECRET_KEY
 
 mkdir templates
 cd templates
@@ -22,8 +34,10 @@ echo "<html>
 
 cd ..
 echo "from flask import Flask, render_template
+import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY')
 
 @app.route('/')
 def index():
