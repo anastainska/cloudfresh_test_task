@@ -2,10 +2,6 @@
 sudo apt update -y
 sudo apt install python3 python3-pip -y python3-venv nginx -y
 
-mkdir flask-app && cd flask-app
-python3 -m venv venv
-source venv/bin/activate
-pip3 install Flask
 sudo apt install curl unzip -y
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -14,10 +10,12 @@ sudo ./aws/install
 FLASK_SECRET_KEY=$(aws ssm get-parameter --name FLASK_SECRET_KEY --with-decryption --query Parameter.Value --output text)
 
 echo "FLASK_SECRET_KEY=$FLASK_SECRET_KEY" | sudo tee -a /etc/environment
-
 source /etc/environment
 
-export FLASK_SECRET_KEY
+mkdir flask-app && cd flask-app
+python3 -m venv venv
+source venv/bin/activate
+pip3 install Flask
 
 mkdir templates
 cd templates
