@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt update -y
-sudo apt install python3 python3-pip -y python3-venv nginx -y
+sudo apt install python3 python3-pip -y python3-venv nginx openssl -y
 
 sudo apt install curl unzip -y
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -52,12 +52,25 @@ if __name__ == '__main__':
 
 python main.py &
 
+sudo chmod 700 /etc/nginx/ssl
+sudo openssl req -newkey rsa:2048 -nodes -keyout /etc/ssl/private/nginx-selfsigned.key -x509 -days 365 -out /etc/ssl/certs/nginx-selfsigned.crt -subj "/C=US/ST=State/L=City/O=Organization/OU=Department/CN=$(curl -s http://checkip.amazonaws.com)"
+
 cd /etc/nginx/sites-enabled
 PUBLIC_IP=$(curl -s http://checkip.amazonaws.com)
 echo "server {
     listen 80;
     listen [::]:80;
     server_name "$PUBLIC_IP";
+
+    return 301 https://"$PUBLIC_IP"$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name "$PUBLIC_IP";
+
+    ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+    ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
 
     location / {
         proxy_pass http://127.0.0.1:5000;

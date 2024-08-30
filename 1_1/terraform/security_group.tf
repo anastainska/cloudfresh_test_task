@@ -15,6 +15,14 @@ resource "aws_vpc_security_group_ingress_rule" "allow-http-ingress" {
   to_port           = 80
 }
 
+resource "aws_vpc_security_group_ingress_rule" "allow-https-ingress" {
+  security_group_id = aws_security_group.allow-http.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 443
+  ip_protocol       = "tcp"
+  to_port           = 443
+}
+
 resource "aws_vpc_security_group_ingress_rule" "allow-ssh-ingress" {
   security_group_id = aws_security_group.allow-http.id
   cidr_ipv4         = "0.0.0.0/0"
